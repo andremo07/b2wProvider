@@ -1,0 +1,117 @@
+package br.com.trendsoftware.b2wprovider.dataprovider;
+
+import java.io.IOException;
+
+import org.apache.commons.httpclient.HttpStatus;
+
+import com.ning.http.client.FluentCaseInsensitiveStringsMap;
+import com.ning.http.client.Response;
+
+import br.com.trendsoftware.b2wprovider.dto.Error;
+import br.com.trendsoftware.b2wprovider.dto.SkyHubItem;
+import br.com.trendsoftware.b2wprovider.dto.SkyHubUserCredencials;
+import br.com.trendsoftware.b2wprovider.response.B2wResponse;
+import br.com.trendsoftware.b2wprovider.service.ItemService;
+import br.com.trendsoftware.restProvider.exception.MessageException;
+import br.com.trendsoftware.restProvider.exception.ProviderException;
+import br.com.trendsoftware.restProvider.exception.ServiceException;
+import br.com.trendsoftware.restProvider.util.ExceptionUtil;
+
+public class B2wItemProvider extends B2wProvider{
+
+	private ItemService itemService;
+	
+	public B2wItemProvider() {
+		
+		initializeService();
+		
+	}
+	
+	@Override
+	protected void initializeService() {
+	
+		itemService = new ItemService();
+	}
+
+	public B2wResponse searchItemById(SkyHubUserCredencials userCredencials, String itemId) throws ProviderException{
+
+		try {
+
+			getLogger().trace("searching item " + itemId);
+
+			long before = System.currentTimeMillis();
+			
+			FluentCaseInsensitiveStringsMap headers = createBw2HeaderRequest(userCredencials);
+
+			Response response = itemService.getItemById(headers,itemId);
+
+			if(response.getStatusCode()!=HttpStatus.SC_OK){
+				if(response.getResponseBody()!=null && !response.getResponseBody().isEmpty()){
+					Error error = getParser().fromJson(response.getResponseBody(), Error.class);
+					throw new ProviderException(error.getError().toUpperCase(),error.getStatus().toString(),error.getMessage());
+				}
+				else
+					throw new ProviderException(response.getStatusCode()+"-"+response.getStatusText());
+			}
+
+			long after = System.currentTimeMillis();
+
+			getLogger().trace(response.toString());
+
+			return B2wResponse.getPrototype(response, after - before);
+		}
+		catch (ServiceException e) {
+			getLogger().error(ExceptionUtil.getStackTrace(e));
+			throw new ProviderException(MessageException.GENERAL_ERROR);
+		} 
+		catch (IOException e) {
+			getLogger().error(ExceptionUtil.getStackTrace(e));
+			throw new ProviderException(MessageException.BODY_RESPONSE_ERROR);
+		}
+
+	}
+	
+	
+	public B2wResponse addItem(SkyHubUserCredencials userCredencials,SkyHubItem item) throws ProviderException{
+
+		try {
+
+			getLogger().trace("adding item");
+
+			long before = System.currentTimeMillis();
+			
+			FluentCaseInsensitiveStringsMap headers = createBw2HeaderRequest(userCredencials);
+
+			Response response = itemService.add(headers,"{\"product\":"+getParser().toJson(item)+"}");
+
+			if(response.getStatusCode()!=HttpStatus.SC_CREATED){
+				if(response.getResponseBody()!=null && !response.getResponseBody().isEmpty()){
+					Error error = getParser().fromJson(response.getResponseBody(), Error.class);
+					throw new ProviderException(error.getError().toUpperCase(),error.getStatus().toString(),error.getMessage());
+				}
+				else
+					throw new ProviderException(response.getStatusCode()+"-"+response.getStatusText());
+			}
+			
+			long after = System.currentTimeMillis();
+
+			getLogger().trace(response.toString());
+
+			B2wResponse mlResponse = B2wResponse.getPrototype(response, after - before);
+			
+			mlResponse.setBody(getParser().toJson(item));
+			
+			return mlResponse;
+		}
+		catch (ServiceException e) {
+			getLogger().error(ExceptionUtil.getStackTrace(e));
+			throw new ProviderException(MessageException.GENERAL_ERROR);
+		} 
+		catch (IOException e) {
+			getLogger().error(ExceptionUtil.getStackTrace(e));
+			throw new ProviderException(MessageException.BODY_RESPONSE_ERROR);
+		}
+
+	}
+			
+}
