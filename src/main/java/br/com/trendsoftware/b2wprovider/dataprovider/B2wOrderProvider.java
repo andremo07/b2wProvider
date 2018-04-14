@@ -91,8 +91,6 @@ public class B2wOrderProvider extends B2wProvider{
 					Error error = getParser().fromJson(response.getResponseBody(), Error.class);
 					throw new ProviderException(error.getError().toUpperCase(),error.getStatus().toString(),error.getMessage());
 				}
-				else
-					throw new ProviderException(response.getStatusCode()+"-"+response.getStatusText());
 			}
 
 			long after = System.currentTimeMillis();
