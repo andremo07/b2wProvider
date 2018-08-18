@@ -6,6 +6,12 @@ public class SkyHubUserCredencials {
     private String apiKey;
     private String accountManagerKey;
     
+	public SkyHubUserCredencials(String userEmail, String apiKey, String accountManagerKey) {
+		super();
+		this.userEmail = userEmail;
+		this.apiKey = apiKey;
+		this.accountManagerKey = accountManagerKey;
+	}
 	public String getUserEmail() {
 		return userEmail;
 	}

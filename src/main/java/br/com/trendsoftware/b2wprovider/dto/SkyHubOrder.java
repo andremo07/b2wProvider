@@ -2,6 +2,7 @@
 package br.com.trendsoftware.b2wprovider.dto;
 
 import java.util.List;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -14,8 +15,7 @@ public class SkyHubOrder {
     @Expose
     private String channel;
     @SerializedName("placed_at")
-    @Expose
-    private String placedAt;
+    public String placedAt;
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
@@ -100,11 +100,6 @@ public class SkyHubOrder {
 
     public void setPlacedAt(String placedAt) {
         this.placedAt = placedAt;
-    }
-
-    public SkyHubOrder withPlacedAt(String placedAt) {
-        this.placedAt = placedAt;
-        return this;
     }
 
     public String getUpdatedAt() {
