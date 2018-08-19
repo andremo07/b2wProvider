@@ -3,6 +3,7 @@ package br.com.trendsoftware.b2wprovider.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.trendsoftware.b2wprovider.dto.SkyHubCategory;
 import br.com.trendsoftware.b2wprovider.dto.SkyHubItem;
 
 public class B2WItemSheetLoader {
@@ -20,6 +21,15 @@ public class B2WItemSheetLoader {
 			item.setName(rowValues.get(2));
 			item.setDescription(rowValues.get(3));
 			item.setBrand(rowValues.get(4));
+			
+			List<SkyHubCategory> list_cat = new ArrayList<SkyHubCategory>();
+			SkyHubCategory cat = new SkyHubCategory();
+			cat.setCode(rowValues.get(6));
+			cat.setName(rowValues.get(7));
+			list_cat.add(cat);
+			
+			item.setCategories(list_cat);
+			
 			item.setWeight(new Double(rowValues.get(12)));
 			item.setHeight(new Double(rowValues.get(13)));
 			item.setLength(new Double(rowValues.get(14)));
