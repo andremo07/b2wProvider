@@ -45,8 +45,6 @@ public abstract class B2wProvider
 		headersMap.add("X-User-Email", userCredencials.getUserEmail());
 		headersMap.add("x-Api-Key", userCredencials.getApiKey());
 		headersMap.add("x-accountmanager-key", userCredencials.getAccountManagerKey());
-		headersMap.add("Content-Type", "application/json; charset=utf-8");
-		headersMap.add("Accept", "application/json;");
 		return headersMap;
 	}
 	
