@@ -102,7 +102,7 @@ public class OrderService extends B2wService{
 	public Response complete(FluentCaseInsensitiveStringsMap headers, String code) throws ServiceException{
 
 		try {
-			Response response = b2w.post("/orders/"+code+"/delivery", null, headers, "{\"status\": \""+OrderStatus.COMPLETED.getName()+"\"}");
+			Response response = b2w.post("/orders/"+code+"/delivery", null, headers, "{\"status\": \""+OrderStatus.COMPLETE.getName()+"\"}");
 			return response;	
 		} catch (RestClientException e) {	
 			throw new ServiceException(String.format("%s:%s", MessageException.ERROR_QUERY_ORDER, e.getMessage()), e);

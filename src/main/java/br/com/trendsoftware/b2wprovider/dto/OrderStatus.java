@@ -3,10 +3,11 @@ package br.com.trendsoftware.b2wprovider.dto;
 public enum OrderStatus {
 
 	APPROVED("payment_received"),
+	INCLUDED("waiting_payment"),
 	PENDING("book_product"),
 	CANCELED("order_canceled"),
 	SHIPPED("order_shipped"),
-	COMPLETED("completed");
+	COMPLETE("complete");
 	
 
 	private String name;

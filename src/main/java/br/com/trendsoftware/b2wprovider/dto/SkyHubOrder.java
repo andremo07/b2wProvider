@@ -66,7 +66,10 @@ public class SkyHubOrder {
     private List<Object> shipments = null;
     @SerializedName("payments")
     @Expose
-    private List<Object> payments = null;
+    private List<SkyHubOrderPayment> payments = null;
+    @SerializedName("calculation_type")
+    @Expose
+    private String calculationType;
 
     public String getCode() {
         return code;
@@ -310,17 +313,24 @@ public class SkyHubOrder {
         return this;
     }
 
-    public List<Object> getPayments() {
+    public List<SkyHubOrderPayment> getPayments() {
         return payments;
     }
 
-    public void setPayments(List<Object> payments) {
+    public void setPayments(List<SkyHubOrderPayment> payments) {
         this.payments = payments;
     }
 
-    public SkyHubOrder withPayments(List<Object> payments) {
+    public SkyHubOrder withPayments(List<SkyHubOrderPayment> payments) {
         this.payments = payments;
         return this;
     }
 
+	public String getCalculationType() {
+		return calculationType;
+	}
+
+	public void setCalculationType(String calculationType) {
+		this.calculationType = calculationType;
+	}
 }
