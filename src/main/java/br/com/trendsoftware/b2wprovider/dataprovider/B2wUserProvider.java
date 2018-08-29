@@ -1,11 +1,10 @@
 package br.com.trendsoftware.b2wprovider.dataprovider;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.apache.commons.httpclient.HttpStatus;
-
-import com.ning.http.client.FluentCaseInsensitiveStringsMap;
-import com.ning.http.client.Response;
+import org.asynchttpclient.Response;
 
 import br.com.trendsoftware.b2wprovider.dto.Error;
 import br.com.trendsoftware.b2wprovider.dto.SkyHubUserCredencials;
@@ -18,29 +17,17 @@ import br.com.trendsoftware.restProvider.util.ExceptionUtil;
 
 public class B2wUserProvider extends B2wProvider{
 
-	private UserService userService;
-	
-	public B2wUserProvider() {
-		
-		initializeService();
-		
-	}
-	
-	@Override
-	protected void initializeService() {
-	
-		userService = new UserService();
-	}
-
 	public B2wResponse getUserInfo(SkyHubUserCredencials userCredencials) throws ProviderException{
 
 		try {
 
 			getLogger().trace("searching user info");
+			
+			UserService userService = new UserService();
 
 			long before = System.currentTimeMillis();
 			
-			FluentCaseInsensitiveStringsMap headers = createBw2HeaderRequest(userCredencials);
+			Map<String,String> headers = createBw2HeaderRequest(userCredencials);
 
 			Response response = userService.getUserInfo(headers);
 
@@ -69,9 +56,4 @@ public class B2wUserProvider extends B2wProvider{
 		}
 
 	}
-
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
-	
 }

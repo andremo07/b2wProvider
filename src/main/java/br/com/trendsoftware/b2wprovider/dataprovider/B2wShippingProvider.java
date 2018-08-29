@@ -1,11 +1,10 @@
 package br.com.trendsoftware.b2wprovider.dataprovider;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.apache.commons.httpclient.HttpStatus;
-
-import com.ning.http.client.FluentCaseInsensitiveStringsMap;
-import com.ning.http.client.Response;
+import org.asynchttpclient.Response;
 
 import br.com.trendsoftware.b2wprovider.dto.Error;
 import br.com.trendsoftware.b2wprovider.dto.SkyHubUserCredencials;
@@ -17,30 +16,18 @@ import br.com.trendsoftware.restProvider.exception.ServiceException;
 import br.com.trendsoftware.restProvider.util.ExceptionUtil;
 
 public class B2wShippingProvider extends B2wProvider{
-
-	private ShippingService shippingService;
 	
-	public B2wShippingProvider() {
-		
-		initializeService();
-		
-	}
-	
-	@Override
-	protected void initializeService() {
-	
-		shippingService = new ShippingService();
-	}
-
 	public B2wResponse searchShippingById(SkyHubUserCredencials userCredencials, String shippingId) throws ProviderException{
 
 		try {
 
 			getLogger().trace("searching user info");
+			
+			ShippingService shippingService = new ShippingService();
 
 			long before = System.currentTimeMillis();
 			
-			FluentCaseInsensitiveStringsMap headers = createBw2HeaderRequest(userCredencials);
+			Map<String,String> headers = createBw2HeaderRequest(userCredencials);
 
 			Response response = shippingService.getShippingById(headers,shippingId);
 
@@ -65,9 +52,4 @@ public class B2wShippingProvider extends B2wProvider{
 		}
 
 	}
-
-	public void setShippingService(ShippingService shippingService) {
-		this.shippingService = shippingService;
-	}
-
 }

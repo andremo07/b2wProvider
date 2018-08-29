@@ -1,11 +1,13 @@
 package br.com.trendsoftware.b2wprovider.dataprovider;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
-import com.ning.http.client.FluentCaseInsensitiveStringsMap;
 
 import br.com.trendsoftware.b2wprovider.dto.SkyHubUserCredencials;
 
@@ -40,14 +42,11 @@ public abstract class B2wProvider
 		this.parser = parser;
 	}
 	
-	public FluentCaseInsensitiveStringsMap createBw2HeaderRequest (SkyHubUserCredencials userCredencials){
-		FluentCaseInsensitiveStringsMap headersMap = new FluentCaseInsensitiveStringsMap();
-		headersMap.add("X-User-Email", userCredencials.getUserEmail());
-		headersMap.add("x-Api-Key", userCredencials.getApiKey());
-		headersMap.add("x-accountmanager-key", userCredencials.getAccountManagerKey());
+	public Map<String,String> createBw2HeaderRequest (SkyHubUserCredencials userCredencials){
+		Map<String,String> headersMap = new HashMap<String,String>();
+		headersMap.put("X-User-Email", userCredencials.getUserEmail());
+		headersMap.put("x-Api-Key", userCredencials.getApiKey());
+		headersMap.put("x-accountmanager-key", userCredencials.getAccountManagerKey());
 		return headersMap;
 	}
-	
-	protected abstract void initializeService();
-	
 }

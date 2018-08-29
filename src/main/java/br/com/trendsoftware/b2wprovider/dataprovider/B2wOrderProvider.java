@@ -1,11 +1,10 @@
 package br.com.trendsoftware.b2wprovider.dataprovider;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.apache.commons.httpclient.HttpStatus;
-
-import com.ning.http.client.FluentCaseInsensitiveStringsMap;
-import com.ning.http.client.Response;
+import org.asynchttpclient.Response;
 
 import br.com.trendsoftware.b2wprovider.dto.Error;
 import br.com.trendsoftware.b2wprovider.dto.Marketplaces;
@@ -21,30 +20,18 @@ import br.com.trendsoftware.restProvider.response.RestResponse;
 import br.com.trendsoftware.restProvider.util.ExceptionUtil;
 
 public class B2wOrderProvider extends B2wProvider{
-
-	private OrderService orderService;
-
-	public B2wOrderProvider() {
-		
-		initializeService();
-		
-	}
-	
-	@Override
-	protected void initializeService() {
-	
-		orderService = new OrderService();
-	}
 	
 	public B2wResponse searchOrderById(SkyHubUserCredencials userCredencials,String orderId) throws ProviderException {
 
 		try {
 
 			getLogger().trace("searching order by id="+orderId);
+			
+			OrderService orderService = new OrderService();
 
 			long before = System.currentTimeMillis();
 
-			FluentCaseInsensitiveStringsMap headers = createBw2HeaderRequest(userCredencials);
+			Map<String,String> headers = createBw2HeaderRequest(userCredencials);
 			
 			Response response = orderService.getOrderById(headers,orderId);
 			
@@ -79,10 +66,12 @@ public class B2wOrderProvider extends B2wProvider{
 		try {
 
 			getLogger().trace("searching orders");
+			
+			OrderService orderService = new OrderService();
 
 			long before = System.currentTimeMillis();
 			
-			FluentCaseInsensitiveStringsMap headers = createBw2HeaderRequest(userCredencials);
+			Map<String,String> headers = createBw2HeaderRequest(userCredencials);
 			
 			Response response = orderService.getQueueOrder(headers);
 			
@@ -114,10 +103,12 @@ public class B2wOrderProvider extends B2wProvider{
 		try {
 
 			getLogger().trace("searching orders");
+			
+			OrderService orderService = new OrderService();
 
 			long before = System.currentTimeMillis();
 			
-			FluentCaseInsensitiveStringsMap headers = createBw2HeaderRequest(userCredencials);
+			Map<String,String> headers = createBw2HeaderRequest(userCredencials);
 			
 			Response response = orderService.process(headers,code);
 			
@@ -151,10 +142,12 @@ public class B2wOrderProvider extends B2wProvider{
 		try {
 
 			getLogger().trace("creating test order");
+			
+			OrderService orderService = new OrderService();
 
 			long before = System.currentTimeMillis();
 			
-			FluentCaseInsensitiveStringsMap headers = createBw2HeaderRequest(userCredencials);
+			Map<String,String> headers = createBw2HeaderRequest(userCredencials);
 			
 			Response response = orderService.create(headers,"{\"order\":"+getParser().toJson(order)+"}");
 			
@@ -189,10 +182,12 @@ public class B2wOrderProvider extends B2wProvider{
 		try {
 
 			getLogger().trace("approving order");
+			
+			OrderService orderService = new OrderService();
 
 			long before = System.currentTimeMillis();
 			
-			FluentCaseInsensitiveStringsMap headers = createBw2HeaderRequest(userCredencials);
+			Map<String,String> headers = createBw2HeaderRequest(userCredencials);
 			
 			Response response = orderService.approve(headers,code);
 			
@@ -221,10 +216,12 @@ public class B2wOrderProvider extends B2wProvider{
 		try {
 
 			getLogger().trace("approving order");
+			
+			OrderService orderService = new OrderService();
 
 			long before = System.currentTimeMillis();
 			
-			FluentCaseInsensitiveStringsMap headers = createBw2HeaderRequest(userCredencials);
+			Map<String,String> headers = createBw2HeaderRequest(userCredencials);
 			
 			Response response = orderService.invoice(headers,code,nfNumber);
 			
@@ -253,10 +250,12 @@ public class B2wOrderProvider extends B2wProvider{
 		try {
 
 			getLogger().trace("cancelling order");
+			
+			OrderService orderService = new OrderService();
 
 			long before = System.currentTimeMillis();
 			
-			FluentCaseInsensitiveStringsMap headers = createBw2HeaderRequest(userCredencials);
+			Map<String,String> headers = createBw2HeaderRequest(userCredencials);
 			
 			Response response = orderService.complete(headers,code);
 			
@@ -285,10 +284,12 @@ public class B2wOrderProvider extends B2wProvider{
 		try {
 
 			getLogger().trace("cancelling order");
+			
+			OrderService orderService = new OrderService();
 
 			long before = System.currentTimeMillis();
 			
-			FluentCaseInsensitiveStringsMap headers = createBw2HeaderRequest(userCredencials);
+			Map<String,String> headers = createBw2HeaderRequest(userCredencials);
 			
 			Response response = orderService.invoice(headers,code,nfNumber);
 			
@@ -317,10 +318,12 @@ public class B2wOrderProvider extends B2wProvider{
 		try {
 
 			getLogger().trace("searching orders");
+			
+			OrderService orderService = new OrderService();
 
 			long before = System.currentTimeMillis();
 			
-			FluentCaseInsensitiveStringsMap headers = createBw2HeaderRequest(userCredencials);
+			Map<String,String> headers = createBw2HeaderRequest(userCredencials);
 			
 			String nmMarketplace = null;
 			String nmStatus = null;

@@ -2,6 +2,7 @@
 package br.com.trendsoftware.b2wprovider.dto;
 
 import java.util.List;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -14,8 +15,7 @@ public class SkyHubOrder {
     @Expose
     private String channel;
     @SerializedName("placed_at")
-    @Expose
-    private String placedAt;
+    public String placedAt;
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
@@ -66,7 +66,10 @@ public class SkyHubOrder {
     private List<Object> shipments = null;
     @SerializedName("payments")
     @Expose
-    private List<Object> payments = null;
+    private List<SkyHubOrderPayment> payments = null;
+    @SerializedName("calculation_type")
+    @Expose
+    private String calculationType;
 
     public String getCode() {
         return code;
@@ -100,11 +103,6 @@ public class SkyHubOrder {
 
     public void setPlacedAt(String placedAt) {
         this.placedAt = placedAt;
-    }
-
-    public SkyHubOrder withPlacedAt(String placedAt) {
-        this.placedAt = placedAt;
-        return this;
     }
 
     public String getUpdatedAt() {
@@ -315,17 +313,24 @@ public class SkyHubOrder {
         return this;
     }
 
-    public List<Object> getPayments() {
+    public List<SkyHubOrderPayment> getPayments() {
         return payments;
     }
 
-    public void setPayments(List<Object> payments) {
+    public void setPayments(List<SkyHubOrderPayment> payments) {
         this.payments = payments;
     }
 
-    public SkyHubOrder withPayments(List<Object> payments) {
+    public SkyHubOrder withPayments(List<SkyHubOrderPayment> payments) {
         this.payments = payments;
         return this;
     }
 
+	public String getCalculationType() {
+		return calculationType;
+	}
+
+	public void setCalculationType(String calculationType) {
+		this.calculationType = calculationType;
+	}
 }

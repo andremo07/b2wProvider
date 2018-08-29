@@ -1,11 +1,10 @@
 package br.com.trendsoftware.b2wprovider.dataprovider;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.apache.commons.httpclient.HttpStatus;
-
-import com.ning.http.client.FluentCaseInsensitiveStringsMap;
-import com.ning.http.client.Response;
+import org.asynchttpclient.Response;
 
 import br.com.trendsoftware.b2wprovider.dto.Error;
 import br.com.trendsoftware.b2wprovider.dto.SkyHubItem;
@@ -19,29 +18,17 @@ import br.com.trendsoftware.restProvider.util.ExceptionUtil;
 
 public class B2wItemProvider extends B2wProvider{
 
-	private ItemService itemService;
-	
-	public B2wItemProvider() {
-		
-		initializeService();
-		
-	}
-	
-	@Override
-	protected void initializeService() {
-	
-		itemService = new ItemService();
-	}
-
 	public B2wResponse searchItemById(SkyHubUserCredencials userCredencials, String itemId) throws ProviderException{
 
 		try {
 
+			ItemService itemService = new ItemService();
+			
 			getLogger().trace("searching item " + itemId);
 
 			long before = System.currentTimeMillis();
 			
-			FluentCaseInsensitiveStringsMap headers = createBw2HeaderRequest(userCredencials);
+			Map<String,String> headers = createBw2HeaderRequest(userCredencials);
 
 			Response response = itemService.getItemById(headers,itemId);
 
@@ -77,10 +64,12 @@ public class B2wItemProvider extends B2wProvider{
 		try {
 
 			getLogger().trace("adding item");
+			
+			ItemService itemService = new ItemService();
 
 			long before = System.currentTimeMillis();
 			
-			FluentCaseInsensitiveStringsMap headers = createBw2HeaderRequest(userCredencials);
+			Map<String,String> headers = createBw2HeaderRequest(userCredencials);
 
 			Response response = itemService.add(headers,"{\"product\":"+getParser().toJson(item)+"}");
 

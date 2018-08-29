@@ -2,7 +2,7 @@ package br.com.trendsoftware.b2wprovider.response;
 
 import java.io.IOException;
 
-import com.ning.http.client.Response;
+import org.asynchttpclient.Response;
 
 import br.com.trendsoftware.restProvider.response.RestResponse;
 
