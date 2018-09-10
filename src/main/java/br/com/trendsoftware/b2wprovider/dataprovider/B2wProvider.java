@@ -5,7 +5,9 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 import com.google.gson.Gson;
 
@@ -13,7 +15,7 @@ import br.com.trendsoftware.b2wprovider.dto.SkyHubUserCredencials;
 
 public abstract class B2wProvider
 {
-	private Logger logger = Logger.getLogger(this.getClass().getName());
+	private Logger logger = LogManager.getLogger(this.getClass());
 
 	@PostConstruct
 	public void init(){

@@ -1,6 +1,6 @@
 package br.com.trendsoftware.b2wprovider.service;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 
 public class B2wService {
 		
