@@ -1,12 +1,15 @@
 package br.com.trendsoftware.b2wprovider.dataprovider;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.httpclient.HttpStatus;
 import org.asynchttpclient.Response;
 
 import br.com.trendsoftware.b2wprovider.dto.Error;
+import br.com.trendsoftware.b2wprovider.dto.ListProductsB2wResponse;
 import br.com.trendsoftware.b2wprovider.dto.SkyHubItem;
 import br.com.trendsoftware.b2wprovider.dto.SkyHubUserCredencials;
 import br.com.trendsoftware.b2wprovider.response.B2wResponse;
@@ -17,6 +20,49 @@ import br.com.trendsoftware.restProvider.exception.ServiceException;
 import br.com.trendsoftware.restProvider.util.ExceptionUtil;
 
 public class B2wItemProvider extends B2wProvider{
+	
+	public List<SkyHubItem> listItens(SkyHubUserCredencials userCredencials) throws ProviderException{
+
+		try {
+
+			ItemService itemService = new ItemService();
+			
+			getLogger().trace("listing b2w itens ");
+
+			long before = System.currentTimeMillis();
+			
+			Map<String,String> headers = createBw2HeaderRequest(userCredencials);
+
+			Response response = itemService.getItens(headers);
+
+			if(response.getStatusCode()!=HttpStatus.SC_OK){
+				if(response.getResponseBody()!=null && !response.getResponseBody().isEmpty()){
+					Error error = getParser().fromJson(response.getResponseBody(), Error.class);
+					throw new ProviderException(error.getError().toUpperCase(),error.getStatus().toString(),error.getMessage());
+				}
+				else
+					throw new ProviderException(response.getStatusCode()+"-"+response.getStatusText());
+			}
+			
+			ListProductsB2wResponse listProductsB2wResponse = getParser().fromJson(response.getResponseBody(), ListProductsB2wResponse.class);
+			List<SkyHubItem> products = new ArrayList<SkyHubItem>();
+			
+			while(listProductsB2wResponse.getNext()!=null)
+			{
+				products.addAll(listProductsB2wResponse.getProducts());
+				response = itemService.getItens(headers,listProductsB2wResponse.getNext());
+				listProductsB2wResponse = getParser().fromJson(response.getResponseBody(), ListProductsB2wResponse.class);
+			}
+
+			getLogger().trace(response.toString());
+
+			return products;
+		}
+		catch (ServiceException e) {
+			getLogger().error(ExceptionUtil.getStackTrace(e));
+			throw new ProviderException(MessageException.GENERAL_ERROR);
+		}
+	}
 
 	public B2wResponse searchItemById(SkyHubUserCredencials userCredencials, String itemId) throws ProviderException{
 
@@ -55,9 +101,7 @@ public class B2wItemProvider extends B2wProvider{
 			getLogger().error(ExceptionUtil.getStackTrace(e));
 			throw new ProviderException(MessageException.BODY_RESPONSE_ERROR);
 		}
-
 	}
-	
 	
 	public B2wResponse addItem(SkyHubUserCredencials userCredencials,SkyHubItem item) throws ProviderException{
 

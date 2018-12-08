@@ -26,18 +26,36 @@ public class ItemService extends B2wService{
 
 	}
 
-	public Response getItens(Map<String,String> headers,String sellerId, String itemStatus, String offset)throws ServiceException{
+	public Response getItensByStatus(Map<String,String> headers,String itemStatus)throws ServiceException{
 
 		try {
 			Map<String, List<String>> params = new  HashMap<String, List<String>>();
-			params.put("offset", Collections.singletonList(offset));
 			params.put("status",Collections.singletonList(itemStatus));
-			Response response = B2wClient.get(B2wClient.API_URL,"/users/"+sellerId+"/items/search",params,headers);
+			Response response = B2wClient.get(B2wClient.API_URL,"/products?",params,headers);
 			return response;	
 		} catch (RestClientException e) {	
 			throw new ServiceException(String.format("%s:%s", MessageException.ERROR_QUERY_USER_ITENS, e.getMessage()), e);
 		}
+	}
+	
+	public Response getItens(Map<String,String> headers)throws ServiceException{
 
+		try {
+			Map<String, List<String>> params = new  HashMap<String, List<String>>();
+			Response response = B2wClient.get(B2wClient.API_URL,"/products?",params,headers);
+			return response;	
+		} catch (RestClientException e) {	
+			throw new ServiceException(String.format("%s:%s", MessageException.ERROR_QUERY_USER_ITENS, e.getMessage()), e);
+		}
+	}
+	
+	public Response getItens(Map<String,String> headers, String nextItensEndpoint)throws ServiceException{
+		try {
+			Response response = B2wClient.get(nextItensEndpoint, headers);
+			return response;	
+		} catch (RestClientException e) {	
+			throw new ServiceException(String.format("%s:%s", MessageException.ERROR_QUERY_USER_ITENS, e.getMessage()), e);
+		}
 	}
 	
 	public Response add(Map<String,String> headers,String json)throws ServiceException{

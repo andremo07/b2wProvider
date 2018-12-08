@@ -1,4 +1,3 @@
-
 package br.com.trendsoftware.b2wprovider.dto;
 
 import com.google.gson.annotations.Expose;
@@ -21,22 +20,12 @@ public class Specification {
         this.key = key;
     }
 
-    public Specification withKey(String key) {
-        this.key = key;
-        return this;
-    }
-
     public String getValue() {
         return value;
     }
 
     public void setValue(String value) {
         this.value = value;
-    }
-
-    public Specification withValue(String value) {
-        this.value = value;
-        return this;
     }
 
 }
