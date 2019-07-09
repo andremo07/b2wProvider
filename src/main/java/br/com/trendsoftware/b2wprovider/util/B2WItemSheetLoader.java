@@ -44,7 +44,7 @@ public class B2WItemSheetLoader {
 				item.setPrice(new Double(rowValues.get(17)));
 				item.setPromotionalPrice(new Double(rowValues.get(18)));
 				item.setQty(new Double(rowValues.get(19)).longValue());
-				
+
 				List<String> images = new ArrayList<String>();
 				for(int indImg=20; indImg<26;indImg++)
 					if(rowValues.get(indImg)!=null && !rowValues.get(indImg).equals(""))
@@ -52,18 +52,20 @@ public class B2WItemSheetLoader {
 					else
 						break;
 				item.setImages(images);
-				
+
 				if(rowValues.size()==27)
 				{
 					List<Specification> fatherSpecifications = new ArrayList<Specification>();
 					Specification fatherSpecification1 = new Specification();
-					Specification fatherSpecification2 = new Specification();
-					fatherSpecification1.setKey("cor");
-					fatherSpecification1.setValue(rowValues.get(26));
-					fatherSpecification2.setKey("Tamanho");
-					fatherSpecification2.setValue("N/A");
-					fatherSpecifications.add(fatherSpecification1);		
-					fatherSpecifications.add(fatherSpecification2);		
+					if(!rowValues.isEmpty())
+					{
+						fatherSpecification1.setKey("cor");
+						fatherSpecification1.setValue(rowValues.get(26));
+						fatherSpecifications.add(fatherSpecification1);		
+					}
+					//fatherSpecification2.setKey("Tamanho");
+					//fatherSpecification2.setValue("N/A");
+					//fatherSpecifications.add(fatherSpecification2);		
 					item.setSpecifications(fatherSpecifications);
 				}
 
@@ -80,13 +82,13 @@ public class B2WItemSheetLoader {
 
 						List<Specification> specifications = new ArrayList<Specification>();
 						Specification specification1 = new Specification();
-						Specification specification2 = new Specification();
+						//						Specification specification2 = new Specification();
 						specification1.setKey("cor");
 						specification1.setValue(variationRow.get(26));
-						//specification2.setKey("Tamanho");
-						//specification2.setValue("N/A");
+						//						specification2.setKey("Tamanho");
+						//						specification2.setValue("N/A");
 						specifications.add(specification1);		
-						//specifications.add(specification2);		
+						//						specifications.add(specification2);		
 						variation.setSpecifications(specifications);
 
 						List<String> variationImages = new ArrayList<String>();
@@ -100,7 +102,7 @@ public class B2WItemSheetLoader {
 						variations.add(variation);
 					});
 					item.setVariations(variations);
-					
+
 					List<String> variationAttributes = new ArrayList<String>();
 					variationAttributes.add("cor");
 					//variationAttributes.add("Tamanho");
